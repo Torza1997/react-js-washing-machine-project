@@ -1,0 +1,46 @@
+.NavBar {
+  width: 100%;
+  height: 130px;
+  background: #ffb800;
+  border-top: 10px solid #000000;
+  border-right: 10px solid #000000;
+  border-left: 10px solid #000000;
+  box-sizing: border-box;
+  font-weight: bold;
+
+}
+.set-flex-nabar {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 1%;
+  padding-right: 1%;
+}
+.coin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.banner {
+  font-size: 2em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.banner-icon {
+  width: 60px;
+}
+@media (max-width: 740px) {
+  .banner > p {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .banner {
+    display: none;
+  }
+  .set-flex-nabar{
+      justify-content: center;
+      align-items: center;
+  }
+}

@@ -1,0 +1,39 @@
+.Coin {
+  width: 43px;
+  height: 43px;
+  border-radius: 50%;
+  border: 10px solid #000000;
+  border: 5px solid #000000;
+  box-sizing: border-box;
+}
+.set-coin-text-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.Amount-of-coin{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.set-flex-of-coin{
+    display: flex;
+}
+.coin-main{
+    z-index: 1;
+}
+.set-absolute{
+    
+    position: absolute;
+}
+@media (max-width:450px){
+    .Coin {
+        width: 35px;
+        height: 35px;
+    }
+}
+@media (max-width:340px){
+    .Coin {
+        width: 25px;
+        height: 25px;
+    }
+}

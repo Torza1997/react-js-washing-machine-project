@@ -1,0 +1,28 @@
+{
+    "Washing_Machine": [
+        {
+            "machine_name": "A",
+            "machine_color": "#00FFB2"
+        },
+        {
+            "machine_name": "B",
+            "machine_color": "#FFD809"
+        },
+        {
+            "machine_name": "C",
+            "machine_color": "#FFD809"
+        },
+        {
+            "machine_name": "D",
+            "machine_color": "#FFD809"
+        },
+        {
+            "machine_name": "E",
+            "machine_color": "#FFD809"
+        },
+        {
+            "machine_name": "F",
+            "machine_color": "#FFD809"
+        }
+    ]
+}

@@ -1,0 +1,142 @@
+.WashingMachine {
+  display: flex;
+  justify-content: center;
+  /* background-color: rebeccapurple; */
+  font-weight: bold;
+  font-size: 1.3em;
+}
+.machine-body {
+  position: relative;
+  width: 306px;
+  height: 356px;
+  /* background: #89a3ff; */
+  border: 10px solid #000000;
+  box-sizing: border-box;
+}
+.timer {
+  position: absolute;
+  width: 150px;
+  height: 51px;
+  left: 4%;
+  right: 0%;
+  top: 4%;
+  bottom: 0%;
+  background: #ad00ff;
+  border: 10px solid #000000;
+  box-sizing: border-box;
+  color: white;
+}
+.set-flex-content-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.set-flex-content-center-colum {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.active-light {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  top: 4%;
+  left: 75%;
+  /* left: 963px;
+  top: 531px; */
+  /* background: #52ff00; */
+  border: 10px solid #000000;
+  box-sizing: border-box;
+  border-radius: 50%;
+}
+.glass-border {
+  width: 196px;
+  height: 196px;
+  background: #ff7474;
+  border: 10px solid #000000;
+  box-sizing: border-box;
+  border-radius: 50%;
+}
+.set-flex-end {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.set-margin-glass {
+  margin-bottom: 8%;
+}
+.glass {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  background-image: linear-gradient(130deg, #89c6ff 55%, #a9d6ff 45%);
+  border: 10px solid #000000;
+  box-sizing: border-box;
+  border-radius: 50%;
+}
+.set-animate-rotate {
+  -webkit-animation: rotate 2s normal linear infinite;
+  animation: rotate 2s normal linear infinite;
+}
+@keyframes rotate {
+  0% {
+    -webkit-transform: rotate3d(0, 0, 1, 0deg);
+    transform: rotate3d(0, 0, 1, 0deg);
+  }
+  25% {
+    -webkit-transform: rotate3d(0, 0, 1, 90deg);
+    transform: rotate3d(0, 0, 1, 90deg);
+  }
+  50% {
+    -webkit-transform: rotate3d(0, 0, 1, 180deg);
+    transform: rotate3d(0, 0, 1, 180deg);
+  }
+  75% {
+    -webkit-transform: rotate3d(0, 0, 1, 270deg);
+    transform: rotate3d(0, 0, 1, 270deg);
+  }
+  100% {
+    -webkit-transform: rotate3d(0, 0, 1, 360deg);
+    transform: rotate3d(0, 0, 1, 360deg);
+  }
+}
+/* --------------------------------------------------- */
+.vending {
+  position: relative;
+  width: 118px;
+  height: 219px;
+  background: #ff8989;
+  border: 10px solid #000000;
+  box-sizing: border-box;
+}
+.vending:hover {
+  background: linear-gradient(180deg, #ff006a 70%, #ff8989 30%);
+}
+.black-plate {
+  width: 78px;
+  height: 128px;
+  background: #000000;
+}
+.coin-count {
+  width: 86px;
+  height: 48px;
+  background: #ad00ff;
+  border: 10px solid #000000;
+  box-sizing: border-box;
+  margin-top: 10px;
+  color: white;
+}
+.vending-box {
+  width: 17px;
+  height: 64px;
+  background: #ffffff;
+}
+.btn {
+  width: 55px;
+  height: 17px;
+  background: #ffd809;
+  margin-top: 10px;
+}

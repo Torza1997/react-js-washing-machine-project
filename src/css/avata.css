@@ -1,0 +1,67 @@
+.Avata {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Avata .ImageProfile {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-position: center;
+  background-size: cover;
+}
+.Avata .BgColor {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background-image: linear-gradient(
+    180deg,
+    #ff9393 0%,
+    #00ffb2 46.88%,
+    #ad00ff 100%
+  );
+}
+.Avata-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Avata .yourName {
+  font-size: 2em;
+  margin-right: 10px;
+  text-align: center;
+}
+.your-coin {
+  font-size: 20px;
+  display: flex;
+}
+@media (max-width: 450px) {
+  .Avata .yourName {
+    font-size: 1.5em;
+  }
+  .your-coin {
+    font-size: 15px;
+  }
+  .Avata .ImageProfile {
+    width: 60px;
+    height: 60px;
+  }
+  .Avata .BgColor {
+    width: 70px;
+    height: 70px;
+  }
+}
+@media (max-width: 340px) {
+    .your-coin {
+      font-size: 12px;
+    }
+    .Avata .ImageProfile {
+      width: 40px;
+      height: 40px;
+    }
+    .Avata .BgColor {
+      width: 50px;
+      height: 50px;
+    }
+  }

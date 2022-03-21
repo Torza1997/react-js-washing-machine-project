@@ -1,0 +1,70 @@
+.Label-laundry {
+  width: 50vw;
+  height: 180px;
+  background: #ff8493;
+  border: 10px solid #000000;
+  box-sizing: border-box;
+  border-radius: 55px;
+  margin-top: 5%;
+  font-size: 8em;
+  font-weight: bold;
+}
+.imgSize {
+  width: 90px;
+}
+@media (max-width: 1680px) {
+  .imgSize {
+    width: 70px;
+  }
+  .Label-laundry {
+    width: 50vw;
+    font-size: 6em;
+  }
+}
+@media (max-width: 1322px) {
+  .imgSize {
+    width: 50px;
+  }
+  .Label-laundry {
+    width: 50vw;
+    font-size: 4em;
+  }
+}
+
+@media (max-width: 926px) {
+  .imgSize {
+    width: 50px;
+  }
+  .Label-laundry {
+    width: 480px;
+    font-size: 4em;
+  }
+}
+
+@media (max-width: 546px) {
+  .imgSize {
+    width: 30px;
+  }
+  .Label-laundry {
+    width: 400px;
+    font-size: 3em;
+  }
+}
+@media (max-width: 445px) {
+  .imgSize {
+    width: 25px;
+  }
+  .Label-laundry {
+    width: 300px;
+    font-size: 2.5em;
+  }
+}
+@media (max-width: 300px) {
+  .imgSize {
+    width: 20px;
+  }
+  .Label-laundry {
+    width: 250px;
+    font-size: 2em;
+  }
+}
