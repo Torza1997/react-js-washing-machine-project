@@ -28,14 +28,15 @@ export default class WashingMachine extends Component {
     this.getTheRestTime(this.props.machineNumber);
   }
   winDowOnLoad = () => {
-    window.addEventListener("beforeunload", () => {
-      setInterval(()=>{},5000);
+    window.addEventListener("beforeunload", (e) => {
       if (this.state.the_rest_milisec > 0 && this.state.timerId === null) {
+        e.preventDefault();
         this.serverTimeCount();
       } else if (
         this.state.the_rest_milisec > 0 &&
         this.state.timerId !== null
       ) {
+        e.preventDefault();
         this.updateTimer();
       }
     });
@@ -111,7 +112,6 @@ export default class WashingMachine extends Component {
         two_coin: this.state.two_coin,
       })
       .then((res) => {
-        console.log(res);
         console.log("updated coin success!");
       })
       .catch((err) => {
