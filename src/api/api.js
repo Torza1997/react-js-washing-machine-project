@@ -2,7 +2,6 @@ const axios = require("axios");
 axios.interceptors.request.use(
   function (config) {
     // Do something before request is sent
-    console.log("Interceptors Before Api Request");
     return config;
   },
   function (error) {
@@ -48,6 +47,34 @@ const api = {
         })
         .then((res) => {
           resolve(res.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  },
+  seveTimer: (data) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .post("http://localhost:9000/machineTimeer", {
+          washing_machine_id: data.washing_machine_id,
+          the_rest_coin: data.coin,
+          the_rest_milisec: data.milisec,
+        })
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  },
+  getTimeByMachineId: (machineID) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`http://localhost:9000/machineTimeer?washing_machine_id=${machineID}`)
+        .then((res) => {
+          resolve(res);
         })
         .catch((error) => {
           reject(error);

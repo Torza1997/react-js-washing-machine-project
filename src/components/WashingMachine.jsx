@@ -19,8 +19,50 @@ export default class WashingMachine extends Component {
       ten_coin: 0,
       five_coin: 0,
       two_coin: 0,
+      the_rest_milisec: 0,
     };
   }
+  componentDidMount() {
+    this.winDowOnLoad();
+    this.getTheRestTime(this.props.machineNumber);
+  }
+  winDowOnLoad = () => {
+    window.addEventListener("beforeunload", () => {
+      if (this.state.the_rest_milisec > 0) {
+        // this.serverTimeCount();
+      }
+    });
+  };
+  getTheRestTime = async (machineID) => {
+    await api
+      .getTimeByMachineId(machineID)
+      .then((res) => {
+        if (res.data?.[0]) {
+          this.setState({
+            the_rest_milisec: res.data[0].the_rest_milisec,
+            coinCount: res.data[0].the_rest_coin,
+          });
+          console.log(res.data[0].the_rest_milisec);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  serverTimeCount = () => {
+    api
+      .seveTimer({
+        washing_machine_id: this.props.machineNumber,
+        coin: this.state.coinCount,
+        milisec: this.state.the_rest_milisec,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((er) => {
+        console.log(er);
+      });
+  };
   getUserInfo = async () => {
     await api
       .getUser()
@@ -73,7 +115,7 @@ export default class WashingMachine extends Component {
   };
   callBackMachineActive = (data) => {
     this.setState({
-      [`machineActive${this.props.machineNumber}`]: data.machineActive,
+      [`machineActive${this.props.machineNumber}`]: data.machineActive || true,
     });
   };
   callBackGetCoinType = (coinType) => {
@@ -104,6 +146,7 @@ export default class WashingMachine extends Component {
     let milisec = this.state.coinCount * 2 * 60 * 1000;
     let timeCount = setInterval(() => {
       var distance = (milisec -= 1000);
+      this.setState({ the_rest_milisec: distance });
       //   let days = Math.floor(distance / (1000 * 60 * 60 * 24));
       let hours = Math.floor(
         (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
