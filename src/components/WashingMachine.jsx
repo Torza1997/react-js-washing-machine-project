@@ -5,13 +5,13 @@ export default class WashingMachine extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      coinCount: 5,
+      coinCount: 0,
       machineColor: {
         background: props.machineColor,
       },
       lightActive: false,
       activeAnimate: false,
-      minutes: 10,
+      minutes: 0,
       timer: "0:0:0",
       openVending: false,
     };
@@ -23,8 +23,11 @@ export default class WashingMachine extends Component {
   };
   callBackFromVending = (data) => {
     this.setState({ openVending: data.ticker });
-    // this.setState({ lightActive: true, activeAnimate: true });
-    // this.countDown();
+    this.setState({ lightActive: true, activeAnimate: true });
+    this.countDown();
+  };
+  callBackCoinCountChange = (data) => {
+    this.setState({ coinCount: data.coinCount, minutes: data.coinCount * 2 });
   };
   countDown = () => {
     let milisec = this.state.minutes * 60 * 1000;
@@ -41,8 +44,8 @@ export default class WashingMachine extends Component {
       this.setState({ timer: hours + ":" + minutes + ":" + seconds });
 
       if (distance === 0) {
+        this.setState({ lightActive: false, activeAnimate: false});
         clearInterval(timeCount);
-        console.log("end");
       }
     }, 1000);
   };
@@ -70,8 +73,11 @@ export default class WashingMachine extends Component {
     return (
       <div className="WashingMachine">
         <Vending
+          updateCurrentCoin={this.state.coinCount}
+          machineNumber={this.props.machineNumber}
           ShowDialog={this.state.openVending}
           CallBack={this.callBackFromVending}
+          CallBackCoinCountChange={this.callBackCoinCountChange}
         />
         <div style={this.state.machineColor} className="machine-body">
           <div className="timer set-flex-content-center">

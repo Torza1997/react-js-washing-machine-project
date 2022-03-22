@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import "../css/avata.css";
 import Coin from "./Coin";
 export default class Avata extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
   setDiplayNone = (checker) => {
     if (checker) {
       return { display: "none" };
@@ -24,19 +28,19 @@ export default class Avata extends Component {
               disableDuplicateCoin={true}
               valueOfCoin={10}
               coinColor="#FF9C09"
-              AmountOfCoin={999}
+              AmountOfCoin={this.props.TenCoin}
             />
             <Coin
               disableDuplicateCoin={true}
               valueOfCoin={5}
               coinColor="#e4d1cf"
-              AmountOfCoin={999}
+              AmountOfCoin={this.props.FiveCoin}
             />
             <Coin
               disableDuplicateCoin={true}
               valueOfCoin={2}
               coinColor="#FF7D75"
-              AmountOfCoin={999}
+              AmountOfCoin={this.props.TwoCoin}
             />
           </div>
         </div>

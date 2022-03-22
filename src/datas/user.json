@@ -1,0 +1,11 @@
+[
+  {
+    "id": 0,
+    "name": "Mockup User",
+    "coin": {
+      "ten_coin": 999,
+      "five_coin": 999,
+      "two_coin": 999
+    }
+  }
+]
