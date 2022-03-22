@@ -20,6 +20,7 @@ export default class WashingMachine extends Component {
       five_coin: 0,
       two_coin: 0,
       the_rest_milisec: 0,
+      timerId: null,
     };
   }
   componentDidMount() {
@@ -28,10 +29,30 @@ export default class WashingMachine extends Component {
   }
   winDowOnLoad = () => {
     window.addEventListener("beforeunload", () => {
-      if (this.state.the_rest_milisec > 0) {
-        // this.serverTimeCount();
+      if (this.state.the_rest_milisec > 0 && this.state.timerId === null) {
+        this.serverTimeCount();
+      } else if (
+        this.state.the_rest_milisec > 0 &&
+        this.state.timerId !== null
+      ) {
+        this.updateTimer();
       }
     });
+  };
+  updateTimer = () => {
+    api
+      .updateTimer({
+        timerId: this.state.timerId,
+        machineNum: this.props.machineNumber,
+        coin: this.state.coinCount,
+        theRestMilisec: this.state.the_rest_milisec,
+      })
+      .then((res) => {
+        console.log("Update successs");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   getTheRestTime = async (machineID) => {
     await api
@@ -39,10 +60,13 @@ export default class WashingMachine extends Component {
       .then((res) => {
         if (res.data?.[0]) {
           this.setState({
+            timerId: res.data[0].id,
             the_rest_milisec: res.data[0].the_rest_milisec,
             coinCount: res.data[0].the_rest_coin,
           });
-          console.log(res.data[0].the_rest_milisec);
+          this.callBackMachineActive({ machineActive: true });
+          this.setState({ lightActive: true, activeAnimate: true });
+          this.countDown();
         }
       })
       .catch((err) => {
@@ -57,7 +81,7 @@ export default class WashingMachine extends Component {
         milisec: this.state.the_rest_milisec,
       })
       .then((res) => {
-        console.log(res);
+        console.log("Insert new machine success");
       })
       .catch((er) => {
         console.log(er);
@@ -86,6 +110,7 @@ export default class WashingMachine extends Component {
         two_coin: this.state.two_coin,
       })
       .then((res) => {
+        console.log(res);
         console.log("updated coin success!");
       })
       .catch((err) => {
@@ -104,6 +129,7 @@ export default class WashingMachine extends Component {
     if (!data.closePopupOnly && this.state.coinCount > 0) {
       this.setState({ openVending: data.ticker });
       this.setState({ lightActive: true, activeAnimate: true });
+      this.state.the_rest_milisec = this.state.coinCount * 2 * 60 * 1000;
       this.countDown();
       this.upDateCoin();
     } else {
@@ -115,7 +141,7 @@ export default class WashingMachine extends Component {
   };
   callBackMachineActive = (data) => {
     this.setState({
-      [`machineActive${this.props.machineNumber}`]: data.machineActive || true,
+      [`machineActive${this.props.machineNumber}`]: data.machineActive,
     });
   };
   callBackGetCoinType = (coinType) => {
@@ -143,21 +169,26 @@ export default class WashingMachine extends Component {
     }
   };
   countDown = () => {
-    let milisec = this.state.coinCount * 2 * 60 * 1000;
+    // let milisec = this.state.coinCount * 2 * 60 * 1000;
     let timeCount = setInterval(() => {
-      var distance = (milisec -= 1000);
-      this.setState({ the_rest_milisec: distance });
-      //   let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      this.setState({
+        the_rest_milisec: (this.state.the_rest_milisec -= 1000),
+      });
+      //   let days = Math.floor(this.state.the_rest_milisec / (1000 * 60 * 60 * 24));
       let hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        (this.state.the_rest_milisec % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       );
-      let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      let minutes = Math.floor(
+        (this.state.the_rest_milisec % (1000 * 60 * 60)) / (1000 * 60)
+      );
+      let seconds = Math.floor(
+        (this.state.the_rest_milisec % (1000 * 60)) / 1000
+      );
 
       this.updateCoin(minutes, seconds);
       this.setState({ timer: hours + ":" + minutes + ":" + seconds });
 
-      if (distance === 0) {
+      if (this.state.the_rest_milisec === 0) {
         this.setState({ lightActive: false, activeAnimate: false });
         clearInterval(timeCount);
       }

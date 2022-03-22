@@ -39,6 +39,7 @@ const api = {
     return new Promise((resolve, reject) => {
       axios
         .put(" http://localhost:9000/user/0", {
+          name: "Mockup User",
           coin: {
             ten_coin: CurrentCoin.ten_coin,
             five_coin: CurrentCoin.five_coin,
@@ -72,7 +73,25 @@ const api = {
   getTimeByMachineId: (machineID) => {
     return new Promise((resolve, reject) => {
       axios
-        .get(`http://localhost:9000/machineTimeer?washing_machine_id=${machineID}`)
+        .get(
+          `http://localhost:9000/machineTimeer?washing_machine_id=${machineID}`
+        )
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  },
+  updateTimer: (data) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .put(`http://localhost:9000/machineTimeer/${data.timerId}`, {
+          washing_machine_id: data.machineNum,
+          the_rest_coin: data.coin,
+          the_rest_milisec: data.theRestMilisec,
+        })
         .then((res) => {
           resolve(res);
         })
