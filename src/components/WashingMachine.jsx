@@ -29,6 +29,7 @@ export default class WashingMachine extends Component {
   }
   winDowOnLoad = () => {
     window.addEventListener("beforeunload", () => {
+      setInterval(()=>{},5000);
       if (this.state.the_rest_milisec > 0 && this.state.timerId === null) {
         this.serverTimeCount();
       } else if (
@@ -144,6 +145,15 @@ export default class WashingMachine extends Component {
       [`machineActive${this.props.machineNumber}`]: data.machineActive,
     });
   };
+  checkMachineActiveForFillCoin = (coinFill) => {
+    if (this.state[`machineActive${this.props.machineNumber}`] === true) {
+      this.setState({
+        the_rest_milisec:
+          this.state.the_rest_milisec + coinFill * 2 * 60 * 1000,
+      });
+      this.updateTimer();
+    }
+  };
   callBackGetCoinType = (coinType) => {
     if (coinType === "coin10") {
       if (this.state.ten_coin > 0) {
@@ -151,6 +161,7 @@ export default class WashingMachine extends Component {
           coinCount: (this.state.coinCount += 10),
           ten_coin: (this.state.ten_coin -= 1),
         });
+        this.checkMachineActiveForFillCoin(10);
       }
     } else if (coinType === "coin5") {
       if (this.state.five_coin > 0) {
@@ -158,6 +169,7 @@ export default class WashingMachine extends Component {
           coinCount: (this.state.coinCount += 5),
           five_coin: (this.state.five_coin -= 1),
         });
+        this.checkMachineActiveForFillCoin(5);
       }
     } else if (coinType === "coin2") {
       if (this.state.two_coin > 0) {
@@ -165,6 +177,7 @@ export default class WashingMachine extends Component {
           coinCount: (this.state.coinCount += 2),
           two_coin: (this.state.two_coin -= 1),
         });
+        this.checkMachineActiveForFillCoin(2);
       }
     }
   };

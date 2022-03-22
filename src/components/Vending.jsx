@@ -36,10 +36,11 @@ export default class Vending extends Component {
       ondragenter: () => {},
       ondragleave: () => {},
       ondrop: () => {
-        if (this.props.MachineActive) {
-        } else {
-          this.props.CallBackGetCoinType(coinType);
-        }
+        this.props.CallBackGetCoinType(coinType);
+        // if (this.props.MachineActive) {
+        // } else {
+        //   this.props.CallBackGetCoinType(coinType);
+        // }
       },
       ondropdeactivate: () => {},
     });
