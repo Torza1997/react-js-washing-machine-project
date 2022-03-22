@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../css/washingMachine.css";
 import Vending from "./Vending.jsx";
+import api from "../api/api.js";
 export default class WashingMachine extends Component {
   constructor(props) {
     super(props);
@@ -14,11 +15,47 @@ export default class WashingMachine extends Component {
       minutes: 0,
       timer: "0:0:0",
       openVending: false,
+      [`machineActive${props.machineNumber}`]: false,
+      ten_coin: 0,
+      five_coin: 0,
+      two_coin: 0,
     };
   }
-  // componentDidMount() {}
+  getUserInfo = async () => {
+    await api
+      .getUser()
+      .then((data) => {
+        this.setState({
+          ten_coin: data[0].coin.ten_coin,
+          five_coin: data[0].coin.five_coin,
+          two_coin: data[0].coin.two_coin,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    return true;
+  };
+  upDateCoin = async () => {
+    await api
+      .updateCoin({
+        ten_coin: this.state.ten_coin,
+        five_coin: this.state.five_coin,
+        two_coin: this.state.two_coin,
+      })
+      .then((res) => {
+        console.log("updated coin success!");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   clickKy = () => {
-    console.log(`machine: ${this.props.machineNumber}`);
+    // console.log(`machine: ${this.props.machineNumber}`);
+    if (this.state[`machineActive${this.props.machineNumber}`] === false) {
+      this.setState({ coinCount: 0 });
+    }
+    this.getUserInfo();
     this.setState({ openVending: true });
   };
   callBackFromVending = (data) => {
@@ -26,15 +63,45 @@ export default class WashingMachine extends Component {
       this.setState({ openVending: data.ticker });
       this.setState({ lightActive: true, activeAnimate: true });
       this.countDown();
+      this.upDateCoin();
     } else {
+      if (this.state[`machineActive${this.props.machineNumber}`] === false) {
+        this.setState({ coinCount: 0 });
+      }
       this.setState({ openVending: data.ticker });
     }
   };
-  callBackCoinCountChange = (data) => {
-    this.setState({ coinCount: data.coinCount, minutes: data.coinCount * 2 });
+  callBackMachineActive = (data) => {
+    this.setState({
+      [`machineActive${this.props.machineNumber}`]: data.machineActive,
+    });
+  };
+  callBackGetCoinType = (coinType) => {
+    if (coinType === "coin10") {
+      if (this.state.ten_coin > 0) {
+        this.setState({
+          coinCount: (this.state.coinCount += 10),
+          ten_coin: (this.state.ten_coin -= 1),
+        });
+      }
+    } else if (coinType === "coin5") {
+      if (this.state.five_coin > 0) {
+        this.setState({
+          coinCount: (this.state.coinCount += 5),
+          five_coin: (this.state.five_coin -= 1),
+        });
+      }
+    } else if (coinType === "coin2") {
+      if (this.state.two_coin > 0) {
+        this.setState({
+          coinCount: (this.state.coinCount += 2),
+          two_coin: (this.state.two_coin -= 1),
+        });
+      }
+    }
   };
   countDown = () => {
-    let milisec = this.state.minutes * 60 * 1000;
+    let milisec = this.state.coinCount * 2 * 60 * 1000;
     let timeCount = setInterval(() => {
       var distance = (milisec -= 1000);
       //   let days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -56,19 +123,14 @@ export default class WashingMachine extends Component {
   updateCoin = (minutes, seconds) => {
     // 1 coin per 2 minutes
     if (minutes % 2 === 0 && seconds === 0) {
-      //   console.log(minutes);
       this.setState({ coinCount: this.state.coinCount - 1 });
     }
   };
   render() {
-    //---varaible---
     let lightColor;
-    let vendingCompo;
-    //----function----
     const setLightColor = (color) => {
       return { background: color };
     };
-    //-----condition----------
     if (this.state.lightActive) {
       lightColor = setLightColor("#52ff00");
     } else {
@@ -77,11 +139,18 @@ export default class WashingMachine extends Component {
     return (
       <div className="WashingMachine">
         <Vending
+          UserCoin={{
+            ten_coin: this.state.ten_coin,
+            five_coin: this.state.five_coin,
+            two_coin: this.state.two_coin,
+          }}
+          CallBackGetCoinType={this.callBackGetCoinType}
+          CallBackMachineActive={this.callBackMachineActive}
+          MachineActive={this.state[`machineActive${this.props.machineNumber}`]}
           updateCurrentCoin={this.state.coinCount}
           machineNumber={this.props.machineNumber}
           ShowDialog={this.state.openVending}
           CallBack={this.callBackFromVending}
-          CallBackCoinCountChange={this.callBackCoinCountChange}
         />
         <div style={this.state.machineColor} className="machine-body">
           <div className="timer set-flex-content-center">

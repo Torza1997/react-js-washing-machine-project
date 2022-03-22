@@ -6,16 +6,17 @@ import Banner from "../image/icon.svg";
 import api from "../api/api.js";
 export default class NavBar extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       userName: "",
       ten_coin: 0,
       five_coin: 0,
       two_coin: 0,
+      tikcerUpdateCoin: sessionStorage.getItem("TickerUpdataCoin"),
     };
   }
-  componentDidMount() {
-    api
+  async componentDidMount() {
+    await api
       .getUser()
       .then((data) => {
         this.setState({
@@ -29,6 +30,9 @@ export default class NavBar extends Component {
         console.error(err);
       });
   }
+  CallbackApp = () => {
+    this.props.Callback({ value: 1 });
+  };
   render() {
     return (
       <div className="NavBar set-flex-nabar">
