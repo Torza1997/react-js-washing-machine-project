@@ -17,7 +17,6 @@ export default class Vending extends Component {
     };
   }
   componentDidMount() {
-    this.setState({ coinCount: this.props.updateCurrentCoin });
     this.getUserInfo();
     this.dragAndDrop(this.props.machineNumber);
     this.ignoredInteractWhenTouchCoin();
@@ -99,17 +98,24 @@ export default class Vending extends Component {
   };
   upDateCoin = () => {
     api
-      .updateCoin()
+      .updateCoin({
+        ten_coin: this.state.ten_coin,
+        five_coin: this.state.five_coin,
+        two_coin: this.state.two_coin,
+      })
       .then((res) => {
-        console.log(res);
+        console.log("updated coin success!");
       })
       .catch((err) => {
         console.error(err);
       });
   };
   getCallBackToParrent = () => {
-    // this.upDateCoin();
-    this.props.CallBack({ ticker: false });
+    this.upDateCoin();
+    this.props.CallBack({ ticker: false});
+  };
+  closePopup = () => {
+    this.props.CallBack({ ticker: false, closePopupOnly: true });
   };
   render() {
     let disPlay;
@@ -125,6 +131,14 @@ export default class Vending extends Component {
       >
         <div className="Vending-bg">
           <div className="Vending">
+            <div className="set-flex-end-closeBtn">
+              <div
+                onClick={this.closePopup}
+                className="closeBtn set-flex-content-center"
+              >
+                X
+              </div>
+            </div>
             <div className="row1  set-flex-content-center">
               <div className="col1 set-flex-content-center">
                 <div
@@ -158,7 +172,11 @@ export default class Vending extends Component {
             </div>
             <div className="row2 ">
               <div className="col1 set-flex-content-center">
-                <div className="coin-for-fill">{this.state.coinCount}</div>
+                <div className="coin-for-fill">
+                  {this.props.updateCurrentCoin > 0
+                    ? this.props.updateCurrentCoin
+                    : this.state.coinCount}
+                </div>
               </div>
               <div className="col2"></div>
             </div>

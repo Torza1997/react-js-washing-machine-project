@@ -36,15 +36,14 @@ const api = {
         });
     });
   },
-  updateCoin: () => {
-    console.log("update");
+  updateCoin: (CurrentCoin) => {
     return new Promise((resolve, reject) => {
       axios
         .put(" http://localhost:9000/user/0", {
           coin: {
-            ten_coin: 999,
-            five_coin: 888,
-            two_coin: 555,
+            ten_coin: CurrentCoin.ten_coin,
+            five_coin: CurrentCoin.five_coin,
+            two_coin: CurrentCoin.two_coin,
           },
         })
         .then((res) => {

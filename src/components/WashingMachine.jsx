@@ -22,9 +22,13 @@ export default class WashingMachine extends Component {
     this.setState({ openVending: true });
   };
   callBackFromVending = (data) => {
-    this.setState({ openVending: data.ticker });
-    this.setState({ lightActive: true, activeAnimate: true });
-    this.countDown();
+    if (!data.closePopupOnly && this.state.coinCount > 0) {
+      this.setState({ openVending: data.ticker });
+      this.setState({ lightActive: true, activeAnimate: true });
+      this.countDown();
+    } else {
+      this.setState({ openVending: data.ticker });
+    }
   };
   callBackCoinCountChange = (data) => {
     this.setState({ coinCount: data.coinCount, minutes: data.coinCount * 2 });
@@ -44,7 +48,7 @@ export default class WashingMachine extends Component {
       this.setState({ timer: hours + ":" + minutes + ":" + seconds });
 
       if (distance === 0) {
-        this.setState({ lightActive: false, activeAnimate: false});
+        this.setState({ lightActive: false, activeAnimate: false });
         clearInterval(timeCount);
       }
     }, 1000);
