@@ -27,17 +27,17 @@ export default class WashingMachine extends Component {
     this.winDowOnLoad();
     this.getTheRestTime(this.props.machineNumber);
   }
-  winDowOnLoad = () => {
+  winDowOnLoad = async () => {
     window.addEventListener("beforeunload", (e) => {
       if (this.state.the_rest_milisec > 0 && this.state.timerId === null) {
-        e.preventDefault();
         this.serverTimeCount();
+        e.preventDefault();
       } else if (
         this.state.the_rest_milisec > 0 &&
         this.state.timerId !== null
       ) {
-        e.preventDefault();
         this.updateTimer();
+        e.preventDefault();
       }
     });
   };

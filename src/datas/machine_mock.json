@@ -8,7 +8,7 @@
         {
             "id": 1,
             "machine_name": "B",
-            "machine_color": "#FFD809"
+            "machine_color": "#89A3FF"
         },
         {
             "id": 2,
@@ -18,17 +18,17 @@
         {
             "id": 3,
             "machine_name": "D",
-            "machine_color": "#FFD809"
+            "machine_color": "#DD7BFF"
         },
         {
             "id": 4,
             "machine_name": "E",
-            "machine_color": "#FFD809"
+            "machine_color": "#FFFFFF"
         },
         {
             "id": 5,
             "machine_name": "F",
-            "machine_color": "#FFD809"
+            "machine_color": "#00FFFF"
         }
     ]
 }

@@ -6,7 +6,9 @@ import $ from "jquery";
 export default class Vending extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      ChangeSlotBg: false,
+    };
   }
   componentDidMount() {
     this.dragAndDrop(this.props.machineNumber);
@@ -33,10 +35,16 @@ export default class Vending extends Component {
       accept: `.yes-drop${Mnum}`,
       overlap: 0.75,
       ondropactivate: () => {},
-      ondragenter: () => {},
-      ondragleave: () => {},
+      ondragenter: () => {
+        this.setState({ ChangeSlotBg: true });
+      },
+      ondragleave: () => {
+        this.setState({ ChangeSlotBg: false });
+      },
       ondrop: () => {
         this.props.CallBackGetCoinType(coinType);
+        this.setState({ ChangeSlotBg: false });
+
         // if (this.props.MachineActive) {
         // } else {
         //   this.props.CallBackGetCoinType(coinType);
@@ -65,6 +73,7 @@ export default class Vending extends Component {
   render() {
     let disPlay;
     let changeColorBtnStart;
+    let slotBgColor;
     if (!this.props.ShowDialog) {
       disPlay = {
         display: "none",
@@ -73,6 +82,11 @@ export default class Vending extends Component {
     if (this.props.MachineActive || this.props.updateCurrentCoin < 30) {
       changeColorBtnStart = {
         background: "#757575",
+      };
+    }
+    if (this.state.ChangeSlotBg) {
+      slotBgColor = {
+        background: `#6f00ff`,
       };
     }
 
@@ -94,6 +108,7 @@ export default class Vending extends Component {
             <div className="row1  set-flex-content-center">
               <div className="col1 set-flex-content-center">
                 <div
+                  style={slotBgColor}
                   className={`slot dropzone${this.props.machineNumber}`}
                 ></div>
                 <div className="yelloBtn"></div>

@@ -100,5 +100,17 @@ const api = {
         });
     });
   },
+  getWashingMachine: () => {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`http://localhost:9000/machine`)
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  },
 };
 export default api;
