@@ -1,4 +1,6 @@
 const axios = require("axios");
+axios.defaults.baseURL = "https://api.example.com";
+
 axios.interceptors.request.use(
   function (config) {
     // Do something before request is sent
@@ -28,14 +30,13 @@ const axiosInstance = axios.create({
   headers: {
     Authorization: `Bearer ${process.env.REACT_APP_LINE_TOKEN}`,
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "http://localhost:3000",
   },
 });
 const api = {
   getUser: () => {
     return new Promise((resolve, reject) => {
       axios
-        .get(" http://localhost:9000/user")
+        .get(`${process.env.REACT_APP_BASE_URL}/user`)
         .then((res) => {
           resolve(res.data);
         })
@@ -47,7 +48,7 @@ const api = {
   updateCoin: (CurrentCoin) => {
     return new Promise((resolve, reject) => {
       axios
-        .put(" http://localhost:9000/user/0", {
+        .put(`${process.env.REACT_APP_BASE_URL}/user/0`, {
           name: "Mockup User",
           coin: {
             ten_coin: CurrentCoin.ten_coin,
@@ -66,7 +67,7 @@ const api = {
   seveTimer: (data) => {
     return new Promise((resolve, reject) => {
       axios
-        .post("http://localhost:9000/machineTimeer", {
+        .post(`${process.env.REACT_APP_BASE_URL}/machineTimeer`, {
           washing_machine_id: data.washing_machine_id,
           the_rest_coin: data.coin,
           the_rest_milisec: data.milisec,
@@ -83,7 +84,7 @@ const api = {
     return new Promise((resolve, reject) => {
       axios
         .get(
-          `http://localhost:9000/machineTimeer?washing_machine_id=${machineID}`
+          `${process.env.REACT_APP_BASE_URL}/machineTimeer?washing_machine_id=${machineID}`
         )
         .then((res) => {
           resolve(res);
@@ -96,11 +97,14 @@ const api = {
   updateTimer: (data) => {
     return new Promise((resolve, reject) => {
       axios
-        .put(`http://localhost:9000/machineTimeer/${data.timerId}`, {
-          washing_machine_id: data.machineNum,
-          the_rest_coin: data.coin,
-          the_rest_milisec: data.theRestMilisec,
-        })
+        .put(
+          `${process.env.REACT_APP_BASE_URL}/machineTimeer/${data.timerId}`,
+          {
+            washing_machine_id: data.machineNum,
+            the_rest_coin: data.coin,
+            the_rest_milisec: data.theRestMilisec,
+          }
+        )
         .then((res) => {
           resolve(res);
         })
@@ -112,7 +116,7 @@ const api = {
   getWashingMachine: () => {
     return new Promise((resolve, reject) => {
       axios
-        .get(`http://localhost:9000/machine`)
+        .get(`${process.env.REACT_APP_BASE_URL}/machine`)
         .then((res) => {
           resolve(res);
         })
