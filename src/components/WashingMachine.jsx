@@ -41,8 +41,18 @@ export default class WashingMachine extends Component {
       }
     });
   };
-  updateTimer = () => {
-    api
+  sendMessageToLine = async (message) => {
+    await api
+      .pushMessageToLine(message)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  updateTimer = async () => {
+    await api
       .updateTimer({
         timerId: this.state.timerId,
         machineNum: this.props.machineNumber,
@@ -75,8 +85,8 @@ export default class WashingMachine extends Component {
         console.log(err);
       });
   };
-  serverTimeCount = () => {
-    api
+  serverTimeCount = async () => {
+    await api
       .seveTimer({
         washing_machine_id: this.props.machineNumber,
         coin: this.state.coinCount,

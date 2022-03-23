@@ -22,6 +22,15 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+// Header for Line Push message to line group
+const axiosInstance = axios.create({
+  baseURL: `${process.env.REACT_APP_ENDPOINT}`,
+  headers: {
+    Authorization: `Bearer ${process.env.REACT_APP_LINE_TOKEN}`,
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "http://localhost:3000",
+  },
+});
 const api = {
   getUser: () => {
     return new Promise((resolve, reject) => {
@@ -112,5 +121,26 @@ const api = {
         });
     });
   },
+  pushMessageToLine: (message) => {
+    return new Promise((resolve, reject) => {
+      axiosInstance
+        .post("/push", {
+          to: `${process.env.REACT_APP_CHAT_GROUP}`,
+          messages: [
+            {
+              type: "text",
+              text: message,
+            },
+          ],
+        })
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  },
 };
+
 export default api;

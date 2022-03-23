@@ -8,6 +8,7 @@ export default class Vending extends Component {
     super(props);
     this.state = {
       ChangeSlotBg: false,
+      minCoin: 1,
     };
   }
   componentDidMount() {
@@ -15,7 +16,10 @@ export default class Vending extends Component {
     this.ignoredInteractWhenTouchCoin();
   }
   getCallBackToParrent = () => {
-    if (this.props.MachineActive || this.props.updateCurrentCoin < 30) {
+    if (
+      this.props.MachineActive ||
+      this.props.updateCurrentCoin < this.state.minCoin
+    ) {
     } else {
       this.props.CallBackMachineActive({ machineActive: true });
       this.props.CallBack({ ticker: false });
@@ -79,7 +83,10 @@ export default class Vending extends Component {
         display: "none",
       };
     }
-    if (this.props.MachineActive || this.props.updateCurrentCoin < 30) {
+    if (
+      this.props.MachineActive ||
+      this.props.updateCurrentCoin < this.state.minCoin
+    ) {
       changeColorBtnStart = {
         background: "#757575",
       };
