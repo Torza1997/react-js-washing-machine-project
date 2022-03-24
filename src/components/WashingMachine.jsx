@@ -27,17 +27,21 @@ export default class WashingMachine extends Component {
     this.winDowOnLoad();
     this.getTheRestTime(this.props.machineNumber);
   }
-  winDowOnLoad = async () => {
+  winDowOnLoad = () => {
     window.addEventListener("beforeunload", (e) => {
+      let event = e || window.event;
+      console.log("before unload");
       if (this.state.the_rest_milisec > 0 && this.state.timerId === null) {
-        this.serverTimeCount();
-        e.preventDefault();
+        event.preventDefault();
+        event.returnValue = "";
+        this.serveTimeCount();
       } else if (
         this.state.the_rest_milisec > 0 &&
         this.state.timerId !== null
       ) {
+        event.preventDefault();
+        event.returnValue = "";
         this.updateTimer();
-        e.preventDefault();
       }
     });
   };
@@ -54,7 +58,6 @@ export default class WashingMachine extends Component {
   updateTimer = async () => {
     await api
       .updateTimer({
-        timerId: this.state.timerId,
         machineNum: this.props.machineNumber,
         coin: this.state.coinCount,
         theRestMilisec: this.state.the_rest_milisec,
@@ -72,7 +75,7 @@ export default class WashingMachine extends Component {
       .then((res) => {
         if (res.data?.[0]) {
           this.setState({
-            timerId: res.data[0].id,
+            timerId: res.data[0].washing_machine_id,
             the_rest_milisec: res.data[0].the_rest_milisec,
             coinCount: res.data[0].the_rest_coin,
           });
@@ -85,7 +88,7 @@ export default class WashingMachine extends Component {
         console.log(err);
       });
   };
-  serverTimeCount = async () => {
+  serveTimeCount = async () => {
     await api
       .seveTimer({
         washing_machine_id: this.props.machineNumber,
@@ -161,7 +164,7 @@ export default class WashingMachine extends Component {
         the_rest_milisec:
           this.state.the_rest_milisec + coinFill * 2 * 60 * 1000,
       });
-      this.updateTimer();
+      this.upDateCoin();
     }
   };
   callBackGetCoinType = (coinType) => {
@@ -208,16 +211,19 @@ export default class WashingMachine extends Component {
         (this.state.the_rest_milisec % (1000 * 60)) / 1000
       );
 
-      this.updateCoin(minutes, seconds);
+      this.updateCoinInCountDown(minutes, seconds);
       this.setState({ timer: hours + ":" + minutes + ":" + seconds });
-
+      if (this.state.the_rest_milisec < 60000) {
+        console.log("less 1 minute");
+      }
       if (this.state.the_rest_milisec === 0) {
         this.setState({ lightActive: false, activeAnimate: false });
+        this.updateTimer();
         clearInterval(timeCount);
       }
     }, 1000);
   };
-  updateCoin = (minutes, seconds) => {
+  updateCoinInCountDown = (minutes, seconds) => {
     // 1 coin per 2 minutes
     if (minutes % 2 === 0 && seconds === 0) {
       this.setState({ coinCount: this.state.coinCount - 1 });

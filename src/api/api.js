@@ -64,10 +64,23 @@ const api = {
         });
     });
   },
+  getWashingMachine: () => {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`${process.env.REACT_APP_BASE_URL}/washing_machine`)
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  },
+  //-----------------------------------------------------------
   seveTimer: (data) => {
     return new Promise((resolve, reject) => {
       axios
-        .post(`${process.env.REACT_APP_BASE_URL}/machineTimeer`, {
+        .post(`${process.env.REACT_APP_BASE_URL}/machineTimer`, {
           washing_machine_id: data.washing_machine_id,
           the_rest_coin: data.coin,
           the_rest_milisec: data.milisec,
@@ -84,13 +97,13 @@ const api = {
     return new Promise((resolve, reject) => {
       axios
         .get(
-          `${process.env.REACT_APP_BASE_URL}/machineTimeer?washing_machine_id=${machineID}`
+          `${process.env.REACT_APP_BASE_URL}/machineTimer?washing_machine_id=${machineID}`
         )
         .then((res) => {
           resolve(res);
         })
         .catch((error) => {
-          reject(error);
+          reject("Not have time the rest");
         });
     });
   },
@@ -98,7 +111,7 @@ const api = {
     return new Promise((resolve, reject) => {
       axios
         .put(
-          `${process.env.REACT_APP_BASE_URL}/machineTimeer/${data.timerId}`,
+          `${process.env.REACT_APP_BASE_URL}/machineTimer`,
           {
             washing_machine_id: data.machineNum,
             the_rest_coin: data.coin,
@@ -113,18 +126,7 @@ const api = {
         });
     });
   },
-  getWashingMachine: () => {
-    return new Promise((resolve, reject) => {
-      axios
-        .get(`${process.env.REACT_APP_BASE_URL}/machine`)
-        .then((res) => {
-          resolve(res);
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
-  },
+  //--------------------------------------------------------------
   pushMessageToLine: (message) => {
     return new Promise((resolve, reject) => {
       axiosInstance
