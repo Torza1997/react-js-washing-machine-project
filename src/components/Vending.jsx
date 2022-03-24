@@ -8,7 +8,7 @@ export default class Vending extends Component {
     super(props);
     this.state = {
       ChangeSlotBg: false,
-      minCoin: 1,
+      minCoin: 2,
     };
   }
   componentDidMount() {
@@ -155,7 +155,7 @@ export default class Vending extends Component {
             <div className="row3 set-flex-content-center">
               <div className="col1">
                 <ul>
-                  <li>start 30 baht/hr</li>
+                  <li>start {this.state.minCoin} baht</li>
                   <li>extend the time 1 baht/ 2 minute</li>
                 </ul>
               </div>

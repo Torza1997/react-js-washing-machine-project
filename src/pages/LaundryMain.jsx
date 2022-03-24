@@ -26,6 +26,7 @@ export default class LaundryMain extends Component {
         console.error(err);
       });
   };
+
   render() {
     return (
       <div className="LaundryMain">

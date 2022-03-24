@@ -79,9 +79,11 @@ export default class WashingMachine extends Component {
             the_rest_milisec: res.data[0].the_rest_milisec,
             coinCount: res.data[0].the_rest_coin,
           });
-          this.callBackMachineActive({ machineActive: true });
-          this.setState({ lightActive: true, activeAnimate: true });
-          this.countDown();
+          if (res.data[0].the_rest_milisec !== 0) {
+            this.callBackMachineActive({ machineActive: true });
+            this.setState({ lightActive: true, activeAnimate: true });
+            this.countDown();
+          }
         }
       })
       .catch((err) => {
@@ -213,8 +215,14 @@ export default class WashingMachine extends Component {
 
       this.updateCoinInCountDown(minutes, seconds);
       this.setState({ timer: hours + ":" + minutes + ":" + seconds });
-      if (this.state.the_rest_milisec < 60000) {
+      if (
+        this.state.the_rest_milisec < 60000 &&
+        this.state.the_rest_milisec > 58000
+      ) {
         console.log("less 1 minute");
+        api.pushMessageToLine(
+          `เครื่องซักผ้า ${this.props.machineNumber} กำลังจะเส็จในอีก 1 นาที`
+        );
       }
       if (this.state.the_rest_milisec === 0) {
         this.setState({ lightActive: false, activeAnimate: false });

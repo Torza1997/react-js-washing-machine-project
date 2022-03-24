@@ -1,6 +1,4 @@
 const axios = require("axios");
-axios.defaults.baseURL = "https://api.example.com";
-
 axios.interceptors.request.use(
   function (config) {
     // Do something before request is sent
@@ -24,14 +22,6 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-// Header for Line Push message to line group
-const axiosInstance = axios.create({
-  baseURL: `${process.env.REACT_APP_ENDPOINT}`,
-  headers: {
-    Authorization: `Bearer ${process.env.REACT_APP_LINE_TOKEN}`,
-    "Content-Type": "application/json",
-  },
-});
 const api = {
   getUser: () => {
     return new Promise((resolve, reject) => {
@@ -110,14 +100,11 @@ const api = {
   updateTimer: (data) => {
     return new Promise((resolve, reject) => {
       axios
-        .put(
-          `${process.env.REACT_APP_BASE_URL}/machineTimer`,
-          {
-            washing_machine_id: data.machineNum,
-            the_rest_coin: data.coin,
-            the_rest_milisec: data.theRestMilisec,
-          }
-        )
+        .put(`${process.env.REACT_APP_BASE_URL}/machineTimer`, {
+          washing_machine_id: data.machineNum,
+          the_rest_coin: data.coin,
+          the_rest_milisec: data.theRestMilisec,
+        })
         .then((res) => {
           resolve(res);
         })
@@ -128,16 +115,11 @@ const api = {
   },
   //--------------------------------------------------------------
   pushMessageToLine: (message) => {
+    console.log(message);
     return new Promise((resolve, reject) => {
-      axiosInstance
-        .post("/push", {
-          to: `${process.env.REACT_APP_CHAT_GROUP}`,
-          messages: [
-            {
-              type: "text",
-              text: message,
-            },
-          ],
+      axios
+        .post(`${process.env.REACT_APP_BASE_URL}/lineMessage`, {
+          text: message,
         })
         .then((res) => {
           resolve(res);
